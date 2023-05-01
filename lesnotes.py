@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.filedialog import *
+from tkinter import LabelFrame
 
 
 def save_file():
@@ -30,16 +31,20 @@ lienzo.config(bg="black")
 head = tk.Frame(lienzo, bg="black")
 head.pack(fill= "x", side="top")
 
-b1 = tk.Button(lienzo, text="Open", bg="green", command=open_file)
-b1.pack(in_=head, side="left")
-b2 = tk.Button(lienzo, text="Save", bg="green", command=save_file)
-b2.pack(in_=head, side="left")
-b3 = tk.Button(lienzo, text="Clear", bg="green", command=clear_window)
-b3.pack(in_=head, side="left")
-b4 = tk.Button(lienzo, text="Exit", bg="green", command=exit)
-b4.pack(in_=head, side="left")
+border = LabelFrame(lienzo, bd = 6, bg = "black")
+border.pack(pady = 10)
 
-body = tk.Text(lienzo, wrap="word", bg="black", insertbackground='green', fg="green", font=("campbell", 14))
+b1 = tk.Button(border, text="Open", width=12, bg="#6CD300", fg = "black", command=open_file)
+b1.pack(side="left")
+b2 = tk.Button(border, text="Save", width=12, bg="#6CD300", fg = "black", command=save_file)
+b2.pack(side="left")
+b3 = tk.Button(border, text="Clear", width=12, bg="#6CD300", fg = "black", command=clear_window)
+b3.pack(side="left")
+b4 = tk.Button(border, text="Exit", width=12, bg="#6CD300", fg = "black", command=exit)
+b4.pack(side="left")
+
+body = tk.Text(lienzo, wrap="word", bg="black", insertbackground="#6CD300", 
+               fg="#6CD300", font=("Cascadia Code", 12))
 body.pack(padx=10, pady=5, expand=True, fill="both")
 
 lienzo.mainloop( )
