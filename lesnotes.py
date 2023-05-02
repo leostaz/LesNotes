@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter.filedialog import *
-from tkinter import LabelFrame
+from tkinter import LabelFrame, messagebox
 
 
 current_file = None
@@ -15,11 +15,15 @@ def save_file():
             return
         current_file = new_file.name
 
+    else:
+        new_file = open(current_file, mode="w")
+
     text = str(body.get("1.0", tk.END))
-    with open(current_file, 'w') as f:
-        f.write(text)
+    new_file.write(text)
+    new_file.close()
 
 def open_file():
+    global current_file
     file = askopenfile(mode="r", filetypes=[("All files", "*.*"), 
                                             ("Text files", "*.txt"),
                                             ("Python files", "*.py")])
@@ -28,9 +32,16 @@ def open_file():
         content = file.read()
         body.delete("1.0", tk.END)
         body.insert(tk.INSERT, content)
+        current_file = file.name
  
 def clear_window():
     body.delete("1.0", tk.END)
+
+def exit_app():
+    if body.edit_modified():
+        if messagebox.askyesno("Exit", "Save changes?"):
+            save_file()
+    lienzo.destroy()
 
 
 lienzo = tk.Tk()
@@ -54,7 +65,7 @@ b3 = tk.Button(border, text="Clear", width=15, bg="#6CD300", fg = "black",
                font=("Cascadia Code", 10, "bold"), command=clear_window)
 b3.pack(side="left")
 b4 = tk.Button(border, text="Exit", width=15, bg="#6CD300", fg = "black", 
-               font=("Cascadia Code", 10, "bold"), command=exit)
+               font=("Cascadia Code", 10, "bold"), command=exit_app)
 b4.pack(side="left")
 
 body = tk.Text(lienzo, wrap="word", bg="black", insertbackground="#6CD300", 
