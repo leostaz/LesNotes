@@ -50,21 +50,21 @@ lienzo.title("LesNotes")
 lienzo.config(bg="black")
 
 head = tk.Frame(lienzo, bg="black")
-head.pack(fill= "x", side="top")
+head.pack(fill="x", side="top")
 
-border = LabelFrame(lienzo, bd = 6, bg = "black")
-border.pack(pady = 10)
+border = LabelFrame(lienzo, bd=6, bg="black")
+border.pack(pady=10)
 
-b1 = tk.Button(border, text="Open", width=15, bg="#6CD300", fg = "black", 
+b1 = tk.Button(border, text="Open", width=15, bg="#6CD300", fg="black", 
                font=("Cascadia Code", 10, "bold"), command=open_file)
 b1.pack(side="left")
-b2 = tk.Button(border, text="Save", width=15, bg="#6CD300", fg = "black", 
+b2 = tk.Button(border, text="Save", width=15, bg="#6CD300", fg="black", 
                font=("Cascadia Code", 10, "bold"), command=save_file)
 b2.pack(side="left")
-b3 = tk.Button(border, text="Clear", width=15, bg="#6CD300", fg = "black", 
+b3 = tk.Button(border, text="Clear", width=15, bg="#6CD300", fg="black", 
                font=("Cascadia Code", 10, "bold"), command=clear_window)
 b3.pack(side="left")
-b4 = tk.Button(border, text="Exit", width=15, bg="#6CD300", fg = "black", 
+b4 = tk.Button(border, text="Exit", width=15, bg="#6CD300", fg="black", 
                font=("Cascadia Code", 10, "bold"), command=exit_app)
 b4.pack(side="left")
 
