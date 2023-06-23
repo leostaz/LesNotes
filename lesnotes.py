@@ -76,6 +76,33 @@ def exit_app(event=None):
     else:
         lienzo.destroy()
 
+def undo(event=None):
+    global current_file
+
+    if current_file is True:
+        if body.edit_modified():
+            body.edit_undo()
+
+def redo(event=None):
+    global current_file
+    
+    if current_file is True:
+        if body.edit_modified():
+            body.edit_redo()
+
+def copy_text():
+    body.clipboard_clear()
+    selected_text = body.get(tk.SEL_FIRST, tk.SEL_LAST)
+    body.clipboard_append(selected_text)
+
+def cut_text():
+    copy_text()
+    body.delete(tk.SEL_FIRST, tk.SEL_LAST)
+
+def paste_text():
+    text_to_paste = body.clipboard_get()
+    body.insert(tk.INSERT, text_to_paste)
+
 
 lienzo = tk.Tk()
 lienzo.geometry("800x600")
@@ -88,30 +115,55 @@ head.pack(fill="x", side="top")
 border = LabelFrame(lienzo, bd=6, bg="black")
 border.pack(pady=10)
 
-b1 = tk.Button(border, text="Open", width=15, bg="#6CD300", fg="black", 
-               font=("Cascadia Code", 10, "bold"), command=open_file)
+b1 = tk.Button(border, text="Open", width=15, bg="#00FF00", fg="black", 
+               font=("Cascadia Code", 12, "bold"), command=open_file)
 b1.pack(side="left")
-b2 = tk.Button(border, text="Close", width=15, bg="#6CD300", fg="black", 
-               font=("Cascadia Code", 10, "bold"), command=close_file)
+b2 = tk.Button(border, text="Close", width=15, bg="#00FF00", fg="black", 
+               font=("Cascadia Code", 12, "bold"), command=close_file)
 b2.pack(side="left")
-b3 = tk.Button(border, text="Save", width=15, bg="#6CD300", fg="black", 
-               font=("Cascadia Code", 10, "bold"), command=save_file)
+b3 = tk.Button(border, text="Save", width=15, bg="#00FF00", fg="black", 
+               font=("Cascadia Code", 12, "bold"), command=save_file)
 b3.pack(side="left")
-b4 = tk.Button(border, text="Clear", width=15, bg="#6CD300", fg="black", 
-               font=("Cascadia Code", 10, "bold"), command=clear_window)
+b4 = tk.Button(border, text="Clear", width=15, bg="#00FF00", fg="black", 
+               font=("Cascadia Code", 12, "bold"), command=clear_window)
 b4.pack(side="left")
-b5 = tk.Button(border, text="Exit", width=15, bg="#6CD300", fg="black", 
-               font=("Cascadia Code", 10, "bold"), command=exit_app)
+b5 = tk.Button(border, text="Exit", width=15, bg="#00FF00", fg="black", 
+               font=("Cascadia Code", 12, "bold"), command=exit_app)
 b5.pack(side="left")
 
-body = tk.Text(lienzo, wrap="word", bg="black", insertbackground="#6CD300", 
-               fg="#6CD300", font=("Cascadia Code", 12))
-body.pack(padx=10, pady=5, expand=True, fill="both")
+body = tk.Text(
+                lienzo, 
+                wrap="word", 
+                bg="black", 
+                insertbackground="#00FF00",
+                selectbackground="#00FF00", 
+                selectforeground="black",
+                fg="#00FF00", 
+                font=("Cascadia Code", 12),
+                undo=True
+                )
+body.pack(
+            padx=10, 
+            pady=5, 
+            expand=True, 
+            fill="both"
+            )
+
+body.configure(
+                highlightthickness=2, 
+                highlightbackground="#00FF00", 
+                highlightcolor="#00FF00"
+                )
 
 lienzo.bind("<Control-o>", open_file)
-lienzo.bind("<Control-c>", close_file)
+lienzo.bind("<Control-C>", close_file)
 lienzo.bind("<Control-s>", save_file) 
 lienzo.bind("<Control-d>", clear_window)
-lienzo.bind("<Control-e>", exit_app)
+lienzo.bind("<Control-q>", exit_app)
+lienzo.bind("<Control-z>", undo)
+lienzo.bind("<Control-y>", redo)
+lienzo.bind("<Control-c>", copy_text)
+lienzo.bind("<Control-x>", cut_text)
+lienzo.bind("<Control-v>", paste_text)
 
-lienzo.mainloop( )
+lienzo.mainloop()
